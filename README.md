@@ -1,0 +1,1 @@
+# ITMO fridayherobot by Temity
