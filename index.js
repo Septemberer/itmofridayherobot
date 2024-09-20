@@ -361,9 +361,9 @@ bot.onText(/\/choose/, (msg) => {
 
         }
         // МОСТЫ
-        if (msg.chat.id === hbmFirstCourseChatId) {
+        if (msg.chat.id === hbmSecondCourseChatId) {
             // Если автор команды в списке фасилитаторов
-            if (msg.chat.id === hbmSecondCourseChatId) {
+            if (fasilitators.includes(msg.from.id)) {
                 if (hbmSecondSelectedIds.length === hbmSecondCoursePeople.length) {
                     console.log('Все студенты 2 курса были выбраны, сбрасываем список...');
                     hbmSecondSelectedIds.length = 0;
@@ -385,9 +385,9 @@ bot.onText(/\/choose/, (msg) => {
                 sendTelegramMessage(token, `${hbmSecondCourseChatId}`, 3, `Привет, [герой](tg://user?id=${hbmSecondCoursePeople[randomId]}) недели! Пришла твоя очередь отвечать на вопросы`);
                 console.log('successed');
             }
-        }
-        else {
-            sendTelegramMessage(token, `${hbmSecondCourseChatId}`, 3, `Oops! На данный момент ты не можешь использовать эту команду`);
+            else {
+                sendTelegramMessage(token, `${hbmSecondCourseChatId}`, 3, `Oops! На данный момент ты не можешь использовать эту команду`);
+            }
         }
     }
     catch (e) {
