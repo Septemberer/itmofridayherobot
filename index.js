@@ -292,6 +292,7 @@ const fasilitators = [
     460284711, // @Tatita_av
     410049485, // @uliikkkkk
     1471478936, // @malyshheva_a
+    1192656583, // @Kornoskatya
 ];
 // me
 // tyan
