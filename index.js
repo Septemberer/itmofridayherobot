@@ -263,13 +263,33 @@ const hbmFirstCoursePeople = [
 
 const hbmSecondCoursePeople = [0, 5129149801, 1]; // list 2 here
 
-const hbmFirstSelectedIds = [1026043675, 433719125];
-// Driftknight8
-// Alexandra_Dem
+const hbmFirstSelectedIds = [
+    1026043675, // 13.09 - @Driftknight8 
+    433719125, // 20.09 - @sunsarahh / @Alexandra_Dem - скрыт / this one
+    1055652344, // 27.09 - @sanchos_a
+    // 04.10 - @nsnegovaya - скрыт
+    1205992927, //11.10 - @vrusq
+    // 18.10 - @kein424 - скрыт
+    929822287, // 25.10 - @sdrnkdr
+    // 01.11 - @kamilailv - скрыт
+    // 08.11 - @tashareva - скрыт
+    344749152, // 15.11 - @imserega
+    717953665, // 22.11 - @sabs1006
+    // 29.11 - @murkelm / @weirdstrang - не ответила / скрыт
+    // 06.12 - @margo_kudrinsky - скрыт
+    916672762, // 13.12 - @Shatten_Tod
+    571965930, // 20.12 - @hiphopalonealex
+    443200762, // 27.12 - @Valdemar501
+    405501656, // 17.01 - @Arammm007
+];
 
 const hbmSecondSelectedIds = [];
 
-const fasilitators = [5129149801, 423198];
+const fasilitators = [
+    5129149801, // @yourtemity
+    423198, // tian
+    468559826, // @dulceMargot
+];
 // me
 // tyan
 
