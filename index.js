@@ -861,10 +861,7 @@ function getRandomQuestions() {
         }
     } while (questions.length < 3);
 
-    return ```А пока что вот для тебя вопросы от FH Бота на сегодня:\n
-              1. ${questions[0]}\n
-              2. ${questions[1]}\n
-              3. ${questions[2]}\n```
+    return questions;
 }
 
 
@@ -896,13 +893,18 @@ bot.onText(/\/choose/, (msg) => {
                 hbmFirstSelectedIds.push(hbmFirstCoursePeople[randomId]);
                 console.log('1st course were selected: ' + hbmFirstSelectedIds);
 
+                let questions = getRandomQuestions();
+                console.log('Questions were selected: ' + questions);
+
                 sendTelegramMessage(token, `${hbmFirstCourseChatId}`, 1487,
                     ```Привет, [герой](tg://user?id=${hbmFirstCoursePeople[randomId]})! 
                     Пришла твоя очередь отвечать на вопросы\n\n
                     Расскажи немного о себе, чтобы Сообществу УВБ было проще задавать тебе актуальные вопросы\n\n
                     При желании ты так же можешь подсветить темы, которые актуальны для тебя сегодня\n\n
-                    ${getRandomQuestions()}```);
-
+                    А вот и первые вопросы от меня на сегодня:\n
+                    1. ${questions[0]}\n
+                    2. ${questions[1]}\n
+                    3. ${questions[2]}\n```);
 
                 console.log('successed');
             } else {
