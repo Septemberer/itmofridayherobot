@@ -852,12 +852,12 @@ async function imOnline() {
 
 function getRandomQuestions() {
     let questions = [];
-    let selectedQuestion
+    let selectedQuestion;
     do {
         let questionId = Math.floor(Math.random() * questionsBaseList.length);
         selectedQuestion = questionsBaseList[questionId];
         if (!questions.includes(selectedQuestion)) {
-            questions.add(selectedQuestion)
+            questions.push(selectedQuestion); // Используем push вместо add в JS
         }
     } while (questions.length < 3);
 
