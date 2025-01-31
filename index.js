@@ -282,6 +282,7 @@ const hbmFirstSelectedIds = [
     443200762, // 27.12 - @Valdemar501
     405501656, // 17.01 - @Arammm007
     1611702064, // 24.01 - @oblogina_a
+    510473765, // 31.01 - @gordrom
 ];
 
 const hbmSecondSelectedIds = [];
@@ -800,7 +801,7 @@ const questionsBaseList = ['Какое у тебя самое любимое д�
     'Как ты реагируешь на добрые розыгрыши?',
     'Если бы ты был героем комедийного фильма, как бы он назывался?',]
 
-const bot = new TelegramBot(token, {polling: true});
+const bot = new TelegramBot(token, { polling: true });
 
 async function sendTelegramMessage(token, chatId, replyMessageId, message) {
     try {
@@ -882,36 +883,40 @@ bot.onText(/\/choose/, (msg) => {
                 }
 
                 let randomId;
+                let selectedPersonId; // введена отдельная переменная для хранения ID
                 do {
                     randomId = Math.floor(Math.random() * hbmFirstCoursePeople.length);
                     selectedPersonId = hbmFirstCoursePeople[randomId];
                 } while (hbmFirstSelectedIds.includes(selectedPersonId));
 
                 console.log('randomId: ' + randomId);
-                console.log('1st course studentId: ' + hbmFirstCoursePeople[randomId]);
+                console.log('1st course studentId: ' + selectedPersonId);
 
-                hbmFirstSelectedIds.push(hbmFirstCoursePeople[randomId]);
+                hbmFirstSelectedIds.push(selectedPersonId);
                 console.log('1st course were selected: ' + hbmFirstSelectedIds);
 
                 let questions = getRandomQuestions();
                 console.log('Questions were selected: ' + questions);
 
-                sendTelegramMessage(token, `${hbmFirstCourseChatId}`, 1487,
-                    ```Привет, [герой](tg://user?id=${hbmFirstCoursePeople[randomId]})! 
-                    Пришла твоя очередь отвечать на вопросы\n\n
-                    Расскажи немного о себе, чтобы Сообществу УВБ было проще задавать тебе актуальные вопросы\n\n
-                    При желании ты также можешь подсветить темы, которые актуальны для тебя сегодня\n\n
-                    А вот и первые вопросы от меня на сегодня:\n
-                    1. ${questions[0]}\n
-                    2. ${questions[1]}\n
-                    3. ${questions[2]}\n```);
+                sendTelegramMessage(token, hbmFirstCourseChatId, 1487,
+                    `Привет, [герой](tg://user?id=${selectedPersonId})! 
+Дедуктивным методом я вычислил, что пришла твоя очередь отвечать на вопросы
+    
+Расскажи немного о себе, чтобы Сообществу УВБ было проще задавать тебе актуальные вопросы
+    
+При желании ты также можешь подсветить темы, которые актуальны для тебя сегодня
+    
+А вот и первые вопросы от меня на сегодня:
+1. ${questions[0]}
+2. ${questions[1]}
+3. ${questions[2]}`); // было некорректное использование шаблонных строк
 
-                console.log('successed');
+                console.log('success');
             } else {
-                sendTelegramMessage(token, `${hbmFirstCourseChatId}`, 1487, `Oops! На данный момент ты не можешь использовать эту команду`);
+                sendTelegramMessage(token, hbmFirstCourseChatId, 1487, `Oops! На данный момент ты не можешь использовать эту команду`);
             }
-
         }
+
         // МОСТЫ
         if (msg.chat.id === hbmSecondCourseChatId) {
             // Если автор команды в списке фасилитаторов
@@ -922,27 +927,29 @@ bot.onText(/\/choose/, (msg) => {
                 }
 
                 let randomId;
+                let selectedPersonId; // введена отдельная переменная для хранения ID
                 do {
                     randomId = Math.floor(Math.random() * hbmSecondCoursePeople.length);
                     selectedPersonId = hbmSecondCoursePeople[randomId];
                 } while (hbmSecondSelectedIds.includes(selectedPersonId));
 
-
                 console.log('randomId: ' + randomId);
-                console.log('2nd course studentId: ' + hbmSecondCoursePeople[randomId]);
+                console.log('2nd course studentId: ' + selectedPersonId);
 
-                hbmSecondSelectedIds.push(hbmSecondCoursePeople[randomId]);
+                hbmSecondSelectedIds.push(selectedPersonId);
                 console.log('2nd course were selected: ' + hbmSecondSelectedIds);
 
-                sendTelegramMessage(token, `${hbmSecondCourseChatId}`, 3, `Привет, [герой](tg://user?id=${hbmSecondCoursePeople[randomId]}) недели! Пришла твоя очередь отвечать на вопросы`);
-                console.log('successed');
+                sendTelegramMessage(token, hbmSecondCourseChatId, 3,
+                    `Привет, [герой](tg://user?id=${selectedPersonId}) недели! Пришла твоя очередь отвечать на вопросы`);
+                console.log('success');
             } else {
-                sendTelegramMessage(token, `${hbmSecondCourseChatId}`, 3, `Oops! На данный момент ты не можешь использовать эту команду`);
+                sendTelegramMessage(token, hbmSecondCourseChatId, 3, `Oops! На данный момент ты не можешь использовать эту команду`);
             }
         }
     } catch (e) {
-        console.log(e);
+        console.error('Ошибка:', e);
     }
+
 });
 
 // чекаем ошибки
