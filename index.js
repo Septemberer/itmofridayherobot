@@ -3,8 +3,6 @@ require('dotenv').config();
 
 const token = process.env.BOT_TOKEN;
 
-// -1001963154196 мосты
-
 const hbmFirstCourseChatId = -1002168074726; // увб 1?
 const hbmSecondCourseChatId = -1001963154196; // мосты
 //-1002168074726 увб 2? check -1001983716773; 
@@ -857,13 +855,33 @@ async function imOnline() {
 }
 
 async function deleteMessage(bot, msg) {
-    await bot.deleteMessage(msg.chat.id, msg.message_id);
+    try {
+        await bot.deleteMessage(msg.chat.id, msg.message_id);
+    } catch (e) {
+        console.error('Ошибка:', e);
+    }
 }
 
 async function harakiri(bot, msg) {
-    await sendTelegramMessage(token, hbmFirstCourseChatId, 1487, `Произошло самоубийство`);
     await deleteMessage(bot, msg);
-    throw new Error(`Я убил себя, хозяин`);
+
+    if (msg.chat.id === hbmFirstCourseChatId) {
+        if (botKillers.includes(msg.from.id)) {
+            await sendTelegramMessage(token, hbmFirstCourseChatId, 1487, `Пришло время самоликвидироваться`);
+            throw new Error(`Я убил себя, хозяин`);
+        } else {
+            await sendTelegramMessage(token, hbmFirstCourseChatId, 1487, `Я не стану расставаться с жизнью по твоему приказу`);
+        }
+    }
+
+    if (msg.chat.id === hbmSecondCourseChatId) {
+        if (botKillers.includes(msg.from.id)) {
+            await sendTelegramMessage(token, hbmSecondCourseChatId, 3, `Пришло время самоликвидироваться`);
+            throw new Error(`Я убил себя, хозяин`);
+        } else {
+            await sendTelegramMessage(token, hbmSecondCourseChatId, 3, `Я не стану расставаться с жизнью по твоему приказу`);
+        }
+    }
 }
 
 function getRandomQuestions() {
@@ -881,6 +899,8 @@ function getRandomQuestions() {
 }
 
 bot.onText(/\/check/, (msg) => {
+    deleteMessage(bot, msg);
+
     try {
         // УВБ 1 КУРС
         if (msg.chat.id === hbmFirstCourseChatId) {
@@ -890,7 +910,16 @@ bot.onText(/\/check/, (msg) => {
             } else {
                 sendTelegramMessage(token, hbmFirstCourseChatId, 1487, `Oops! На данный момент ты не можешь использовать эту команду`);
             }
-            deleteMessage(bot, msg);
+
+        }
+        // МОСТЫ
+        if (msg.chat.id === hbmSecondCourseChatId) {
+            // Если автор команды в списке фасилитаторов
+            if (fasilitators.includes(msg.from.id)) {
+                sendTelegramMessage(token, hbmSecondCourseChatId, 3, `Тестовое сообщение от бота`);
+            } else {
+                sendTelegramMessage(token, hbmSecondCourseChatId, 3, `Oops! На данный момент ты не можешь использовать эту команду`);
+            }
         }
     } catch (e) {
         console.error('Ошибка:', e);
@@ -898,18 +927,11 @@ bot.onText(/\/check/, (msg) => {
 })
 
 bot.onText(/\/harakiri/, (msg) => {
-    // УВБ 1 КУРС
-    if (msg.chat.id === hbmFirstCourseChatId) {
-        if (botKillers.includes(msg.from.id)) {
-            harakiri(bot, msg);
-        } else {
-            sendTelegramMessage(token, hbmFirstCourseChatId, 1487, `Я не стану умирать по твоему приказу`);
-            deleteMessage(bot, msg);
-        }
-    }
+    harakiri(bot, msg);
 })
 
 bot.onText(/\/ping/, (msg) => {
+    deleteMessage(bot, msg);
     imOnline();
 })
 
