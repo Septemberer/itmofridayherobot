@@ -299,6 +299,11 @@ const fasilitators = [
 ];
 // me
 // tyan
+const botKillers = [
+    5129149801, // @yourtemity
+    423198, // @o22yFY
+    1242819224, // @LaptevAnatoly
+];
 
 const questionsBaseList = ['Какое у тебя самое любимое детское воспоминание?',
     'Кто оказал на тебя самое большое влияние в жизни?',
@@ -851,6 +856,16 @@ async function imOnline() {
     console.log(JSON.stringify(data, null, 2));
 }
 
+async function deleteMessage(bot, msg) {
+    await bot.deleteMessage(msg.chat.id, msg.message_id);
+}
+
+async function harakiri(bot, msg) {
+    await sendTelegramMessage(token, hbmFirstCourseChatId, 1487, `Произошло самоубийство`);
+    await deleteMessage(bot, msg);
+    throw new Error(`Я убил себя, хозяин`);
+}
+
 function getRandomQuestions() {
     let questions = [];
     let selectedQuestion;
@@ -865,6 +880,34 @@ function getRandomQuestions() {
     return questions;
 }
 
+bot.onText(/\/check/, (msg) => {
+    try {
+        // УВБ 1 КУРС
+        if (msg.chat.id === hbmFirstCourseChatId) {
+            // Если автор команды в списке фасилитаторов
+            if (fasilitators.includes(msg.from.id)) {
+                sendTelegramMessage(token, hbmFirstCourseChatId, 1487, `Тестовое сообщение от бота`);
+            } else {
+                sendTelegramMessage(token, hbmFirstCourseChatId, 1487, `Oops! На данный момент ты не можешь использовать эту команду`);
+            }
+            deleteMessage(bot, msg);
+        }
+    } catch (e) {
+        console.error('Ошибка:', e);
+    }
+})
+
+bot.onText(/\/harakiri/, (msg) => {
+    // УВБ 1 КУРС
+    if (msg.chat.id === hbmFirstCourseChatId) {
+        if (botKillers.includes(msg.from.id)) {
+            harakiri(bot, msg);
+        } else {
+            sendTelegramMessage(token, hbmFirstCourseChatId, 1487, `Я не стану умирать по твоему приказу`);
+            deleteMessage(bot, msg);
+        }
+    }
+})
 
 bot.onText(/\/ping/, (msg) => {
     imOnline();
@@ -912,6 +955,7 @@ bot.onText(/\/choose/, (msg) => {
             } else {
                 sendTelegramMessage(token, hbmFirstCourseChatId, 1487, `Oops! На данный момент ты не можешь использовать эту команду`);
             }
+            deleteMessage(bot, msg);
         }
 
         // МОСТЫ
